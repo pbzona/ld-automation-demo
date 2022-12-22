@@ -12,17 +12,9 @@ class Client extends EventEmitter {
     this.currentSearch = '';
     this.id = getRandomBytes(16);
     this.results = [];
-    this.autoCompleteIndex = 0;
 
     this.ldclient = LD.getClient();
     this.ctx = { key: this.id };
-
-    this.initialize();
-  }
-
-  async initialize() {
-    console.log('Initializing client');
-    this.usingAutocomplete = await this.ldclient.variation('enable-search-autocomplete', this.ctx, false);
   }
 
   itemApi(endpoint) {
@@ -89,8 +81,16 @@ class Client extends EventEmitter {
     }
   }
 
-  clearDatabase() {
-    
+  async clearDatabase() {
+    try {
+      const response = await request.delete(this.itemApi(`/deleteAll`))
+                                    .query({ really: 'yes' });
+      if (response.statusCode === 200) {
+        console.log(`All database records have been cleared`);
+      }
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 
