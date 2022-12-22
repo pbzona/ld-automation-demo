@@ -14,6 +14,8 @@ app.listen(PORT, async () => {
     await ldclient.waitForInitialization();
 
     startSimulation(process.env.N_CLIENTS);
+  } catch (err) {
+    console.error(err);
   }
 });
 
