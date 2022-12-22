@@ -9,7 +9,7 @@ class ClientManager extends EventEmitter {
       ClientManager.instance = this;
     }
     this.min = minimumClients;
-    this.max = maximumClients;
+    this.max = minimumClients; // Just setting this to min for now
     this.clients = {};
 
     this.removeClient = this.removeClient.bind(this);
