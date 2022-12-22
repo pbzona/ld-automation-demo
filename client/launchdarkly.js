@@ -3,13 +3,14 @@ const { EventEmitter } = require('events');
 
 class LD extends EventEmitter {
   constructor() {
+    super();
     this.ldclient = launchdarkly.init(process.env.LD_SDK_KEY);
     this.ldclient.on('ready', () => {
       this.emit('ready');
     })
   }
 
-  get() {
+  getClient() {
     return this.ldclient;
   }
 }
