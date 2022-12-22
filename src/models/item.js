@@ -1,5 +1,5 @@
-const crypto = require('crypto');
 const mongoose = require('mongoose');
+const { getRandomBytes } = require('../util/getRandomBytes');
 
 const itemSchema = mongoose.Schema({
   text: {
@@ -18,7 +18,7 @@ const itemSchema = mongoose.Schema({
 
 itemSchema.statics.build = (text) => {
   const size = 1000;
-  const key = crypto.randomBytes(size).toString('hex');
+  const key = getRandomBytes(size);
   return new Item({
     text,
     key
