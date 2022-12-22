@@ -25,14 +25,15 @@ class ClientManager extends EventEmitter {
     console.log(this.clients)
   }
 
-  addClient() {
+  async addClient() {
     console.log('ClientManager#addClient');
+    await this.sleep(1000);
     if (this.count() <= this.max) {
       const client = new Client();
       this.clients[client.id] = client;
       client.on('done', this.removeClient);
 
-      client.executeSearch();
+      await client.executeSearch();
     }
   }
 
@@ -53,12 +54,9 @@ class ClientManager extends EventEmitter {
     return this.count() < this.min;
   }
 
-  setUpDoneListener(client) {
-    client.on('done', this.removeClient);
-  }
-
-  removeDoneListener(client) {
-    client.removeListener('done', this.removeClient);
+  async sleep(maxTime) {
+    const msToWait = Math.floor(Math.random() * maxTime);
+    return new Promise(resolve => setTimeout(resolve, msToWait));
   }
 }
 

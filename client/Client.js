@@ -12,8 +12,8 @@ class Client extends EventEmitter {
     this.currentSearch = '';
     this.id = getRandomBytes(16);
     this.results = [];
-    this.usingAutocomplete = false;
-    
+    this.autoCompleteIndex = 0;
+
     this.ldclient = LD.getClient();
     this.ctx = { key: this.id };
 
@@ -23,8 +23,6 @@ class Client extends EventEmitter {
   async initialize() {
     console.log('Initializing client');
     this.usingAutocomplete = await this.ldclient.variation('enable-search-autocomplete', this.ctx, false);
-
-    this.executeSearch();
   }
 
   itemApi(endpoint) {
@@ -32,9 +30,8 @@ class Client extends EventEmitter {
   }
 
   handleResponse() {
+    console.log(`Found ${this.results.length} results`)
     this.emit('done', this.id);
-    if (this.currentSearch === this.word || this.results.length === 0) {
-    }
   }
   
   async searchForTerm(word) {
@@ -50,14 +47,24 @@ class Client extends EventEmitter {
 
   async searchWithAutoComplete(word) {
     console.info('using autocomplete');
-
     // Hit search endpoint on each keystroke to simulate autocomplete population
     // as the user types in their query
+    for (let letter of this.word.split('')) {
+      this.currentSearch = this.currentSearch.concat(letter);
+      console.log('Searching for:', this.currentSearch);
+      const response = await request.get(this.itemApi('/search'))
+                                  .query({ q: this.currentSearch });
+      this.results = response.body;
+    }
+
+    this.handleResponse();
   }
 
 
   async executeSearch() {
-    if (this.usingAutocomplete) {
+    console.log('Executing search for', this.id);
+    const shouldUseAutoComplete = await this.ldclient.variation('enable-search-autocomplete', this.ctx, false);
+    if (shouldUseAutoComplete) {
       await this.searchWithAutoComplete(this.word);
     } else {
       await this.searchForTerm(this.word);
