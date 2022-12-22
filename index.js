@@ -8,7 +8,7 @@ const PORT = 3000;
 app.listen(PORT, () => {
   console.log('Listening on port', PORT);
   connectToDatabase(() => {
-    startSimulation(process.env.N_CLIENTS);
+    startSimulation(parseInt(process.env.N_CLIENTS));
   })
 });
 
