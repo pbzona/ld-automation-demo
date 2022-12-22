@@ -1,8 +1,10 @@
 const express = require('express');
+const { createItem } = require('./create');
+const { searchForItem } = require('./search');
 
 const router = express.Router();
 
-router.get('/', () => { console.log('hello...') });
-router.post('/', () => {});
+router.get('/search', searchForItem);
+router.post('/', createItem);
 
 module.exports = { router };
