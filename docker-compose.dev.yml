@@ -1,0 +1,35 @@
+services:
+  api:
+    image: node:18
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: node index.js
+    depends_on:
+      - mongo
+    environment:
+      MONGO_USER: apmdemo
+      MONGO_PASSWORD: topsecret
+      MONGO_DATABASE: items
+      MONGO_URI: mongodb://apmdemo:topsecret@mongo:27017/items
+  mongo:
+    image: mongo:6.0
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./data:/data/db
+      - ./src/db/init:/docker-entrypoint-initdb.d:ro
+    environment:
+      MONGO_USER: apmdemo
+      MONGO_PASSWORD: topsecret
+      MONGO_DATABASE: items
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: topsecret
+      MONGO_INITDB_DATABASE: items
+    command: 
+      - '--logpath'
+      - '/var/log/mongodb/mongod.log'
