@@ -7,24 +7,21 @@ services:
     volumes:
       - .:/app
     working_dir: /app
-    command: npm run dev:container
+    command: node -r newrelic index.js
     depends_on:
       - mongo
-    environment:
-      MONGO_USER: apmdemo
-      MONGO_PASSWORD: topsecret
-      MONGO_DATABASE: items
-      MONGO_URI: mongodb://apmdemo:topsecret@mongo:27017/items
+    env_file:
+      - ./.env
   mongo:
     image: mongo:6.0
     restart: always
     ports:
       - 27017:27017
     volumes:
-      - ./dev-data:/data/db
+      - ./prod-data:/data/db
       - ./src/db/init:/docker-entrypoint-initdb.d:ro
-    environment:
-      
+    env_file:
+      - ./.env
     command: 
       - '--logpath'
       - '/var/log/mongodb/mongod.log'

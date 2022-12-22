@@ -7,7 +7,7 @@ exports.startSimulation = async (numberOfClients) => {
   LD.on('ready', () => {
     console.log('LD client ready for use');
 
-    const clientmanager = new ClientManager(2, 2);
+    const clientmanager = new ClientManager(numberOfClients);
     clientmanager.start();
   })
   
