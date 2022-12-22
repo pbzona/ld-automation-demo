@@ -1,3 +1,3 @@
 module.exports = {
-  baseUrl: 'http://mongo:3000/api/items'
+  baseUrl: 'http://localhost:3000/api/items'
 }
