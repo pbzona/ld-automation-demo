@@ -78,16 +78,19 @@ class Client extends EventEmitter {
   }
 
   // Demo methods
-  async seedDatabase() {
+  async seedDatabase(numberOfRecords) {
     try {
-      console.log('hi')
+      const response = await request.post(this.itemApi(`/seed/${numberOfRecords}`));
+      if (response.statusCode === 201) {
+        console.log(`Successfully added ${numberOfRecords} records to the database`);
+      }
     } catch (err) {
       console.error(err);
     }
   }
 
   clearDatabase() {
-
+    
   }
 }
 
