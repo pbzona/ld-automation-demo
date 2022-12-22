@@ -50,6 +50,7 @@ class Client extends EventEmitter {
     // Hit search endpoint on each keystroke to simulate autocomplete population
     // as the user types in their query
     for (let letter of this.word.split('')) {
+      await this.waitForKeystroke();
       this.currentSearch = this.currentSearch.concat(letter);
       console.log('Searching for:', this.currentSearch);
       const response = await request.get(this.itemApi('/search'))
@@ -69,6 +70,11 @@ class Client extends EventEmitter {
     } else {
       await this.searchForTerm(this.word);
     }
+  }
+
+  async waitForKeystroke() {
+    const msToWait = Math.floor(Math.random() * 200);
+    return new Promise(resolve => setTimeout(resolve, msToWait))
   }
 
   // Demo methods
