@@ -1,5 +1,7 @@
 const { faker } = require('@faker-js/faker');
+
 // Utilities for generating text field on a database item
+// and search terms to be used by "clients"
 
 const getRandomWord = () => {
   const typeOfWord = Math.random();
@@ -20,4 +22,4 @@ const createLongStringOfWords = (numberOfWords, arr = []) => {
   return arr.join('');
 }
 
-module.exports = { createLongStringOfWords };
+module.exports = { getRandomWord, createLongStringOfWords };
