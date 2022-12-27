@@ -38,8 +38,9 @@ class Client extends EventEmitter {
   }
 
   async searchWithAutoComplete(word) {
-    const cutoffChance = 0.25; // Odds of search stopping before reaching end
-                               // e.g. user finds a useful result before entering full word
+    // Odds of search stopping before reaching end
+    // e.g. user finds a useful result before entering full word
+    const cutoffChance = process.env.AUTOCOMPLETE_EARLY_FINISH;
 
     console.info('using autocomplete');
     // Hit search endpoint on each keystroke to simulate autocomplete population
