@@ -41,8 +41,9 @@ class ClientManager extends EventEmitter {
 
   removeClient(client) {
     console.log('ClientManager#removeClient');
-    this.clients[client].removeAllListeners('done');
-    delete this.clients[client];
+
+    // this.clients[client].removeAllListeners('done');
+    // delete this.clients[client];
     this.clientCount--;
     if (this.shouldAddClient()) {
       this.addClient();
