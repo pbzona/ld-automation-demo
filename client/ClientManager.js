@@ -10,7 +10,7 @@ class ClientManager extends EventEmitter {
     }
     this.min = minimumClients;
     this.max = minimumClients; // Just setting this to min for now
-    this.clients = {};
+    this.clients = new WeakMap();
 
     this.removeClient = this.removeClient.bind(this);
 
@@ -22,7 +22,7 @@ class ClientManager extends EventEmitter {
     for (let i = 0; i < this.min; i++) {
       this.addClient();
     }
-    console.log(this.clients)
+    console.log(this.clients);
   }
 
   async addClient() {
@@ -30,7 +30,7 @@ class ClientManager extends EventEmitter {
     await this.sleep(1000);
     if (this.count() <= this.max) {
       const client = new Client();
-      this.clients[client.id] = client;
+      this.clients.set(client, client);
       client.on('done', this.removeClient);
 
       await client.executeSearch();
@@ -40,7 +40,6 @@ class ClientManager extends EventEmitter {
   removeClient(id) {
     console.log('ClientManager#removeClient');
     this.clients[id].removeAllListeners('done');
-    delete this.clients[id];
     if (this.shouldAddClient()) {
       this.addClient();
     }

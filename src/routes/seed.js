@@ -1,7 +1,7 @@
 const { Item } = require('../models/item');
 const { createLongStringOfWords } = require('../util/itemText');
 
-const TEXT_LENGTH = 10; // number of words to include in text string
+const TEXT_LENGTH = 6; // number of words to include in text string
 
 exports.seedItems = async (req, res) => {
   const numberOfItems = req.params.num;
