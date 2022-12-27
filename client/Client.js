@@ -38,6 +38,9 @@ class Client extends EventEmitter {
   }
 
   async searchWithAutoComplete(word) {
+    const cutoffChance = 0.25; // Odds of search stopping before reaching end
+                               // e.g. user finds a useful result before entering full word
+
     console.info('using autocomplete');
     // Hit search endpoint on each keystroke to simulate autocomplete population
     // as the user types in their query
@@ -48,6 +51,10 @@ class Client extends EventEmitter {
       const response = await request.get(this.itemApi('/search'))
                                   .query({ q: this.currentSearch });
       this.results = response.body;
+
+      if (Math.random() <= cutoffChance || this.results.length === 0) {
+        break;
+      }
     }
 
     this.handleResponse();
