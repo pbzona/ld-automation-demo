@@ -23,7 +23,7 @@ class Client extends EventEmitter {
 
   handleResponse() {
     console.log(`Found ${this.results.length} results`)
-    this.emit('done', this.id);
+    this.emit('done', this);
   }
   
   async searchForTerm(word) {
